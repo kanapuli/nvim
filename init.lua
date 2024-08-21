@@ -230,6 +230,17 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- Copilot setup
+  'github/copilot.vim',
+  -- Easymotion setup
+  {
+    'easymotion/vim-easymotion',
+    config = function()
+      vim.keymap.set('n', '<leader>f', '<Plug>(easymotion-overwin-f)', { desc = '[S]earch [O]ne [L]etter' })
+      vim.keymap.set('n', '<leader>l', '<Plug>(easymotion-overwin-line)', { desc = '[M]ove to [L]ine' })
+      vim.keymap.set('n', '<leader>w', '<Plug>(easymotion-overwin-w)', { desc = '[M]ove to [W]ord' })
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
