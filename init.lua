@@ -88,7 +88,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.maplocalleader = ','
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -256,63 +256,65 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- Close brackets and quotes automatically
+  'jiangmiao/auto-pairs',
   -- Copilot setup
   'github/copilot.vim',
   -- Copilot chat
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
+    'CopilotC-Nvim/CopilotChat.nvim',
     opts = {
-      show_help = "yes", -- Show help text for CopilotChatInPlace, default: yes
+      show_help = 'yes', -- Show help text for CopilotChatInPlace, default: yes
       debug = false, -- Enable or disable debug mode, the log file will be in ~/.local/state/nvim/CopilotChat.nvim.log
       disable_extra_info = 'no', -- Disable extra information (e.g: system prompt) in the response.
-      language = "English" -- Copilot answer language settings when using default prompts. Default language is English.
+      language = 'English', -- Copilot answer language settings when using default prompts. Default language is English.
       -- proxy = "socks5://127.0.0.1:3000", -- Proxies requests via https or socks.
       -- temperature = 0.1,
     },
     build = function()
-      vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
+      vim.notify "Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim."
     end,
-    event = "VeryLazy",
+    event = 'VeryLazy',
     keys = {
-      { "<leader>ccb", ":CopilotChatBuffer ", desc = "CopilotChat - Chat with current buffer" },
-      { "<leader>cce", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code" },
-      { "<leader>cct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
+      { '<leader>ccb', ':CopilotChatBuffer ', desc = 'CopilotChat - Chat with current buffer' },
+      { '<leader>cce', '<cmd>CopilotChatExplain<cr>', desc = 'CopilotChat - Explain code' },
+      { '<leader>cct', '<cmd>CopilotChatTests<cr>', desc = 'CopilotChat - Generate tests' },
       {
-        "<leader>ccT",
-        "<cmd>CopilotChatVsplitToggle<cr>",
-        desc = "CopilotChat - Toggle Vsplit", -- Toggle vertical split
+        '<leader>ccT',
+        '<cmd>CopilotChatVsplitToggle<cr>',
+        desc = 'CopilotChat - Toggle Vsplit', -- Toggle vertical split
       },
       {
-        "<leader>ccv",
-        ":CopilotChatVisual ",
-        mode = "x",
-        desc = "CopilotChat - Open in vertical split",
+        '<leader>ccv',
+        ':CopilotChatVisual ',
+        mode = 'x',
+        desc = 'CopilotChat - Open in vertical split',
       },
       {
-        "<leader>ccx",
-        ":CopilotChatInPlace<cr>",
-        mode = "x",
-        desc = "CopilotChat - Run in-place code",
+        '<leader>ccx',
+        ':CopilotChatInPlace<cr>',
+        mode = 'x',
+        desc = 'CopilotChat - Run in-place code',
       },
       {
-        "<leader>ccf",
-        "<cmd>CopilotChatFixDiagnostic<cr>", -- Get a fix for the diagnostic message under the cursor.
-        desc = "CopilotChat - Fix diagnostic",
+        '<leader>ccf',
+        '<cmd>CopilotChatFixDiagnostic<cr>', -- Get a fix for the diagnostic message under the cursor.
+        desc = 'CopilotChat - Fix diagnostic',
       },
       {
-        "<leader>ccr",
-        "<cmd>CopilotChatReset<cr>", -- Reset chat history and clear buffer.
-        desc = "CopilotChat - Reset chat history and clear buffer",
-      }
+        '<leader>ccr',
+        '<cmd>CopilotChatReset<cr>', -- Reset chat history and clear buffer.
+        desc = 'CopilotChat - Reset chat history and clear buffer',
+      },
     },
   },
-  -- Easymotion setup
+  -- asymotion setup
   {
     'easymotion/vim-easymotion',
     config = function()
-      vim.keymap.set('n', '<leader>f', '<Plug>(easymotion-overwin-f)', { desc = '[S]earch [O]ne [L]etter' })
-      vim.keymap.set('n', '<leader>l', '<Plug>(easymotion-overwin-line)', { desc = '[M]ove to [L]ine' })
-      vim.keymap.set('n', '<leader>w', '<Plug>(easymotion-overwin-w)', { desc = '[M]ove to [W]ord' })
+      vim.keymap.set('n', '<localleader>f', '<Plug>(easymotion-overwin-f)', { desc = '[S]earch [O]ne [L]etter' })
+      vim.keymap.set('n', '<localleader>l', '<Plug>(easymotion-overwin-line)', { desc = '[M]ove to [L]ine' })
+      vim.keymap.set('n', '<localleader>w', '<Plug>(easymotion-overwin-w)', { desc = '[M]ove to [W]ord' })
     end,
   },
 
@@ -837,16 +839,15 @@ require('lazy').setup({
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          -- Select the autocomplete on enter
+          ['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
           ['<C-Space>'] = cmp.mapping.complete {},
-          -- Select the autocomplete on enter
-          ['<CR>'] = cmp.mapping.confirm { select = true },
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
           --  So if you have a snippet that's like:
