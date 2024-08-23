@@ -715,6 +715,8 @@ require('lazy').setup({
         'goimports',
         'jsonlint',
         'yaml-language-server',
+        'bash-language-server',
+        'shellcheck',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
