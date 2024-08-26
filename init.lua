@@ -747,7 +747,7 @@ require('lazy').setup({
           settings = {
             ['gopls'] = {
               completeUnimported = true, -- This enables auto-import for unimported packages
-              usePlaceholders = true, -- Enables function parameter placeholders when completing function signatures
+              usePlaceholders = false, -- Enables function parameter placeholders when completing function signatures
               analyses = {
                 unusedparams = true,
               },
