@@ -273,6 +273,43 @@ require('lazy').setup({
   'jiangmiao/auto-pairs',
   -- Copilot setup
   'github/copilot.vim',
+  -- avante AI setup
+  -- Separate declaration to ensure nvim-web-devicons is installed
+  {
+    'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('nvim-web-devicons').setup()
+    end,
+  },
+  {
+    'yetone/avante.nvim',
+    event = 'VeryLazy',
+    build = 'make',
+    opts = {
+      -- add any opts here
+      provider = 'copilot',
+      mappings = {
+        ask = '<leader>aa',
+        submit = {
+          normal = '<CR>',
+          insert = '<C-a>',
+        },
+      },
+    },
+    dependencies = {
+      'stevearc/dressing.nvim',
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below is optional, make sure to setup it properly if you have lazy=true
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
+    },
+  },
   -- Copilot chat
   {
     'CopilotC-Nvim/CopilotChat.nvim',
@@ -503,7 +540,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      -- { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
