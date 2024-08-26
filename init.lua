@@ -219,6 +219,17 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
+-- Open files at the last position when reopened
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*',
+  callback = function()
+    local last_pos = vim.fn.line '\'"'
+    if last_pos > 1 and last_pos <= vim.fn.line '$' then
+      vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
+    end
+  end,
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
