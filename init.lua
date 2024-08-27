@@ -161,7 +161,7 @@ vim.opt.scrolloff = 10
 --  See `:help vim.keymap.set()`
 --
 --  Remap C-s to save
-vim.keymap.set('n', '<localleader-s>', ':w<CR>')
+vim.keymap.set('n', '<C-s>', ':w<CR>')
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
@@ -269,8 +269,6 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- For Git
   'tpope/vim-fugitive',
-  -- Close brackets and quotes automatically
-  'jiangmiao/auto-pairs',
   -- Copilot setup
   'github/copilot.vim',
   -- avante AI setup
@@ -292,7 +290,7 @@ require('lazy').setup({
         ask = '<leader>aa',
         submit = {
           normal = '<CR>',
-          insert = '<C-a>',
+          insert = '<C-s>',
         },
       },
     },
@@ -343,9 +341,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<C-n>', function()
         harpoon:list():select(3)
       end)
-      vim.keymap.set('n', '<C-s>', function()
-        harpoon:list():select(4)
-      end)
 
       -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set('n', '<C-S-P>', function()
@@ -392,17 +387,6 @@ require('lazy').setup({
         end,
       }
     end,
-  },
-  -- Neo-tree
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-      '3rd/image.nvim', -- Optional image support in preview window: See `# Preview Mode` for more information
-    },
   },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -797,7 +781,6 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'gopls',
         'goimports',
-        'jsonlint',
         'yaml-language-server',
         'bash-language-server',
         'shellcheck',
@@ -1071,19 +1054,19 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
