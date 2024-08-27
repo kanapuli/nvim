@@ -269,8 +269,6 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- For Git
   'tpope/vim-fugitive',
-  -- Copilot setup
-  'github/copilot.vim',
   -- avante AI setup
   -- Separate declaration to ensure nvim-web-devicons is installed
   {
