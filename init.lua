@@ -269,42 +269,14 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- For Git
   'tpope/vim-fugitive',
-  -- avante AI setup
+  -- Copilot setup
+  'github/copilot.vim',
   -- Separate declaration to ensure nvim-web-devicons is installed
   {
     'nvim-tree/nvim-web-devicons',
     config = function()
       require('nvim-web-devicons').setup()
     end,
-  },
-  {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    build = 'make',
-    opts = {
-      -- add any opts here
-      provider = 'copilot',
-      mappings = {
-        ask = '<leader>aa',
-        submit = {
-          normal = '<CR>',
-          insert = '<C-s>',
-        },
-      },
-    },
-    dependencies = {
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      --- The below is optional, make sure to setup it properly if you have lazy=true
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { 'markdown', 'Avante' },
-        },
-        ft = { 'markdown', 'Avante' },
-      },
-    },
   },
   -- easymotion setup
   {
