@@ -163,6 +163,8 @@ vim.opt.scrolloff = 10
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+-- Run :only to close other split windows
+vim.keymap.set('n', '<leader>o', '<C-w>o', { desc = 'Close other windows' })
 --  Remap C-s to save
 vim.keymap.set('n', '<C-s>', ':w<CR>')
 
