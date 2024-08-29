@@ -98,6 +98,9 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- Set wrap on
+vim.wo.wrap = true
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -600,6 +603,13 @@ require('lazy').setup({
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+
+          local function go_to_definition_split()
+            vim.cmd 'split'
+            require('telescope.builtin').lsp_definitions { layout_strategy = 'horizontal' }
+          end
+
+          map('go', go_to_definition_split, '[G]oto [D]efinition (split)')
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
