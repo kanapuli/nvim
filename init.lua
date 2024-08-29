@@ -604,16 +604,13 @@ require('lazy').setup({
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          local function go_to_definition_split()
-            vim.cmd 'split'
-            require('telescope.builtin').lsp_definitions { layout_strategy = 'horizontal' }
-          end
-
-          map('go', go_to_definition_split, '[G]oto [D]efinition (split)')
-
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
+          map('gdd', function()
+            require('telescope.builtin').lsp_definitions { jump_type = 'vsplit' }
+          end, '[G]oto [D]efinition [V]split')
+
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
