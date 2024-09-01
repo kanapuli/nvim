@@ -200,6 +200,24 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+-- autocmd to attach LSP signature
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client ~= nil and vim.tbl_contains({ 'null-ls' }, client.name) then -- blacklist lsp
+      return
+    end
+    require('lsp_signature').on_attach({
+      -- ... setup options here ...
+      bind = true,
+      handler_opts = {
+        border = 'rounded',
+      },
+    }, bufnr)
+  end,
+})
+
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*.go',
   desc = 'run go imports',
@@ -722,8 +740,8 @@ require('lazy').setup({
             },
           },
         },
-        -- pyright = {},
-        -- rust_analyzer = {},
+        pyright = {},
+        rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
