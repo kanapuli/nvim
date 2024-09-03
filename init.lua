@@ -163,6 +163,8 @@ vim.opt.scrolloff = 10
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+-- Map cb to clear buffers
+vim.keymap.set('n', '<leader>cb', '<cmd>bufdo bd<CR>', { desc = 'Close all buffers' })
 -- Run :only to close other split windows
 vim.keymap.set('n', '<leader>o', '<C-w>o', { desc = 'Close other windows' })
 --  Remap C-s to save
