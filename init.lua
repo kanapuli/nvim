@@ -323,6 +323,8 @@ require('lazy').setup({
       vim.keymap.set('n', 's', '<Plug>(easymotion-s)', { desc = '[S]earch [R]epeat [C]har' })
       vim.keymap.set('n', '<localleader>l', '<Plug>(easymotion-overwin-line)', { desc = '[M]ove to [L]ine' })
       vim.keymap.set('n', '<localleader>w', '<Plug>(easymotion-overwin-w)', { desc = '[M]ove to [W]ord' })
+      vim.keymap.set('n', 'n', '<Plug>(easymotion-next)', { desc = '[M]ove to [N]ext' })
+      vim.keymap.set('n', 'N', '<Plug>(easymotion-prev)', { desc = '[M]ove to [N]ext' })
       vim.g.EasyMotion_smartcase = 1
     end,
   },
