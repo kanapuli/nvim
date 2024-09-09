@@ -211,6 +211,18 @@ vim.keymap.set('n', '<leader>g', ':Test<CR>', { desc = 'Test' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+local group = vim.api.nvim_create_augroup('CodeCompanionHooks', {})
+
+vim.api.nvim_create_autocmd({ 'User' }, {
+  pattern = 'CodeCompanionInline*',
+  group = group,
+  callback = function(request)
+    if request.match == 'CodeCompanionInlineFinished' then
+      -- Format the buffer after the inline request has completed
+      require('conform').format { bufnr = request.buf }
+    end
+  end,
+})
 -- autocmd to attach LSP signature
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)

@@ -23,6 +23,56 @@ return {
           adapter = 'copilot',
         },
       },
+      adapters = {
+        mistralnemo = function()
+          return require('codecompanion.adapters').extend('ollama', {
+            name = 'mistralnemo', -- Ensure this adapter is differentiated from Ollama
+            schema = {
+              model = {
+                default = 'mistral-nemo:latest',
+              },
+              num_ctx = {
+                default = 16384,
+              },
+              num_predict = {
+                default = -1,
+              },
+            },
+          })
+        end,
+        llama3 = function()
+          return require('codecompanion.adapters').extend('ollama', {
+            name = 'llama3', -- Ensure this adapter is differentiated from Ollama
+            schema = {
+              model = {
+                default = 'llama3:latest',
+              },
+              num_ctx = {
+                default = 16384,
+              },
+              num_predict = {
+                default = -1,
+              },
+            },
+          })
+        end,
+        codellama = function()
+          return require('codecompanion.adapters').extend('ollama', {
+            name = 'codellama', -- Ensure this adapter is differentiated from Ollama
+            schema = {
+              model = {
+                default = 'codellama:7b',
+              },
+              num_ctx = {
+                default = 16384,
+              },
+              num_predict = {
+                default = -1,
+              },
+            },
+          })
+        end,
+      },
 
       vim.keymap.set('n', '<C-b>', '<cmd>CodeCompanionActions<CR>', { noremap = true, silent = true }),
       vim.keymap.set('v', '<C-b>', '<cmd>CodeCompanionActions<CR>', { noremap = true, silent = true }),
