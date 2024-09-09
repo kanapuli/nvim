@@ -7,6 +7,7 @@ return {
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     build = 'make tiktoken', -- Only on MacOS or Linux
+    enabled = false,
     opts = {
       debug = false, -- Enable debugging
       -- See Configuration section for rest

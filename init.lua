@@ -202,6 +202,13 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- [[ Basic Usercommands ]]
+vim.api.nvim_create_user_command('Test', function()
+  package.loaded.ChatGPT4 = nil
+  require('ChatGPT4').Vanakam()
+end, {})
+vim.keymap.set('n', '<leader>g', ':Test<CR>', { desc = 'Test' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 -- autocmd to attach LSP signature
