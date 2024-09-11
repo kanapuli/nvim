@@ -160,9 +160,14 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- set relative number on
+vim.opt.relativenumber = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+-- open terminal (insert mode) in split
+vim.keymap.set('n', '<localleader>tt', '<cmd>split term://$SHELL<CR>i', { desc = 'Open terminal in split', noremap = true, silent = true })
 -- Map cb to clear buffers
 vim.keymap.set('n', '<leader>cb', '<cmd>bufdo bd<CR>', { desc = 'Close all buffers' })
 -- Run :only to close other split windows

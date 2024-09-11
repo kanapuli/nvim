@@ -42,26 +42,10 @@ return {
         end,
         llama3 = function()
           return require('codecompanion.adapters').extend('ollama', {
-            name = 'llama3', -- Ensure this adapter is differentiated from Ollama
+            name = 'llama3.1', -- Ensure this adapter is differentiated from Ollama
             schema = {
               model = {
-                default = 'llama3:latest',
-              },
-              num_ctx = {
-                default = 16384,
-              },
-              num_predict = {
-                default = -1,
-              },
-            },
-          })
-        end,
-        codellama = function()
-          return require('codecompanion.adapters').extend('ollama', {
-            name = 'codellama', -- Ensure this adapter is differentiated from Ollama
-            schema = {
-              model = {
-                default = 'codellama:7b',
+                default = 'llama3.1:latest',
               },
               num_ctx = {
                 default = 16384,
