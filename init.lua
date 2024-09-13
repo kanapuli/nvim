@@ -166,6 +166,9 @@ vim.opt.relativenumber = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+
+vim.keymap.set('n', '<localleader>a', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add bookmark' })
+vim.keymap.set('n', '<localleader>A', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add global bookmark' })
 -- open terminal (insert mode) in split
 vim.keymap.set('n', '<localleader>tt', '<cmd>split term://$SHELL<CR>i', { desc = 'Open terminal in split', noremap = true, silent = true })
 -- Map cb to clear buffers
