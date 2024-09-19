@@ -4,6 +4,7 @@ return {
     { '<tab><tab>', mode = { 'n' } },
   },
   branch = 'main',
+  enabled = false,
   dependencies = { 'nvim-web-devicons' },
   config = function()
     require('bookmarks').setup()
