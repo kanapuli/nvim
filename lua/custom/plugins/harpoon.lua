@@ -3,6 +3,7 @@ return {
     'ThePrimeagen/harpoon',
     dependencies = { 'nvim-lua/plenary.nvim' }, -- harpoon depends on plenary.nvim
     config = function()
+      require('telescope').load_extension 'harpoon'
       require('harpoon').setup {
         -- Example settings
         global_settings = {
