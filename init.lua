@@ -166,6 +166,8 @@ vim.opt.relativenumber = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+-- Keymap to delete buffer
+vim.keymap.set('n', '<leader>bd', '<cmd>bd!<CR>', { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<localleader>a', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add bookmark' })
 vim.keymap.set('n', '<localleader>A', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add global bookmark' })
@@ -324,8 +326,14 @@ require('lazy').setup({
   -- For Git
   'tpope/vim-fugitive',
   -- Copilot setup
-  'github/copilot.vim',
+  {
+    'github/copilot.vim',
+    config = function()
+      vim.cmd ':Copilot disable'
+    end,
+  },
   -- Separate declaration to ensure nvim-web-devicons is installed
+  --
   {
     'nvim-tree/nvim-web-devicons',
     config = function()
@@ -512,6 +520,8 @@ require('lazy').setup({
     end,
   },
 
+  -- zen mode plugin
+  { 'folke/zen-mode.nvim' },
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
