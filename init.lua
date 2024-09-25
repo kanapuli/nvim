@@ -166,13 +166,14 @@ vim.opt.relativenumber = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 --
+vim.keymap.set('n', '<localleader>pv', ':Ex<CR>', { desc = 'Open preview' })
 -- Keymap to delete buffer
 vim.keymap.set('n', '<leader>bd', '<cmd>bd!<CR>', { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<localleader>a', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add bookmark' })
 vim.keymap.set('n', '<localleader>A', ":lua require'bookmarks'.add_bookmarks(false)<CR>", { desc = 'Add global bookmark' })
 -- open terminal (insert mode) in split
-vim.keymap.set('n', '<localleader>tt', '<cmd>split term://$SHELL<CR>i', { desc = 'Open terminal in split', noremap = true, silent = true })
+vim.keymap.set('n', '<localleader>tt', '<cmd>split term://$SHELL<CR>', { desc = 'Open terminal in split', noremap = true, silent = true })
 -- Map cb to clear buffers
 vim.keymap.set('n', '<leader>cb', '<cmd>bufdo bd<CR>', { desc = 'Close all buffers' })
 -- Run :only to close other split windows
@@ -211,6 +212,14 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('i', '<C-h>', '<Esc><C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('i', '<C-l>', '<Esc><C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('i', '<C-j>', '<Esc><C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('i', '<C-k>', '<Esc><C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('t', '<C-l>', '<C-\\><C-n><C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('t', '<C-j>', '<C-\\><C-n><C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- [[ Basic Usercommands ]]
 vim.api.nvim_create_user_command('Test', function()
@@ -221,6 +230,18 @@ vim.keymap.set('n', '<leader>g', ':Test<CR>', { desc = 'Test' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+-- always enter terminal with insert mode
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = '*',
+  desc = 'Always enter terminal with insert mode',
+  callback = function()
+    if vim.bo.buftype == 'terminal' then
+      vim.cmd 'startinsert'
+    end
+  end,
+})
+
 local group = vim.api.nvim_create_augroup('CodeCompanionHooks', {})
 
 vim.api.nvim_create_autocmd({ 'User' }, {
