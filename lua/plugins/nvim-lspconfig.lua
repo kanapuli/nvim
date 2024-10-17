@@ -223,7 +223,6 @@ return {
       'golines', -- formats long go lines
       'gomodifytags', -- Just run GoAddTags and see the magic
       'gotests', --generate table driven tests from the source files
-      'impl', --generates stubs for implementing an interface
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
