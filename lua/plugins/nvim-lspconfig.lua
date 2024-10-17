@@ -215,7 +215,15 @@ return {
       'yaml-language-server',
       'bash-language-server',
       'shellcheck',
-      'json-lsp',
+      'jsonlint',
+      'nilaway', -- uber utility to find the possibilites of problems caused by nil
+      'revive', -- fast go static analysis tool. Better than golint
+      'semgrep', -- static analysis tool
+      'goimports-reviser', -- fixes the imports order
+      'golines', -- formats long go lines
+      'gomodifytags', -- Just run GoAddTags and see the magic
+      'gotests', --generate table driven tests from the source files
+      'impl', --generates stubs for implementing an interface
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
