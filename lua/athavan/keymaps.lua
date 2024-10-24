@@ -56,3 +56,25 @@ vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move focus to th
 
 -- keymap to open vim fugitive
 vim.keymap.set('n', '<localleader>g', '<cmd>Git<CR>', { desc = 'Open Git window' })
+
+-- keymap to open file list
+vim.keymap.set('n', '<C-p>', '<cmd>Files<CR>', { desc = 'Open file list' })
+
+-- leader leader will toggle buffer
+vim.keymap.set('n', '<localleader><localleader>', '<C-^>', { desc = 'Toggle buffer' })
+
+-- always center search results
+vim.keymap.set('n', 'n', 'nzz', { silent = true })
+vim.keymap.set('n', 'N', 'Nzz', { silent = true })
+vim.keymap.set('n', '*', '*zz', { silent = true })
+vim.keymap.set('n', '#', '#zz', { silent = true })
+vim.keymap.set('n', 'g*', 'g*zz', { silent = true })
+
+-- "very magic" (less escaping needed) regexes by default
+vim.keymap.set('n', '?', '?\\v')
+vim.keymap.set('n', '/', '/\\v')
+vim.keymap.set('c', '%s/', '%sm/')
+
+-- let the left and right arrows be useful: they can switch buffers
+vim.keymap.set('n', '<left>', ':bp<cr>')
+vim.keymap.set('n', '<right>', ':bn<cr>')

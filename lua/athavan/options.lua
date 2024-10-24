@@ -71,3 +71,9 @@ vim.opt.scrolloff = 10
 
 -- set relative number on
 vim.opt.relativenumber = true
+
+-- set color column to 80
+vim.opt.colorcolumn = '80'
+
+-- also, show tabs nicer
+vim.opt.listchars = 'tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•'

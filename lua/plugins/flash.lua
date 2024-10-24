@@ -1,6 +1,7 @@
 return {
   'folke/flash.nvim',
   event = 'VeryLazy',
+  enabled = false,
   opts = {},
   -- stylua: ignore
   disabled = true,
