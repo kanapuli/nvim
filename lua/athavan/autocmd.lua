@@ -84,3 +84,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.api.nvim_create_user_command('Rg', function(opts)
+  vim.cmd('silent! grep! ' .. opts.args)
+  vim.cmd 'copen'
+end, { nargs = '*' })

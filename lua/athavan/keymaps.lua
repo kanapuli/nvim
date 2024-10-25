@@ -81,3 +81,6 @@ vim.keymap.set('n', '<right>', ':bn<cr>')
 
 -- delete 1 char back in insert mode
 vim.keymap.set('i', '<C-b>', '<BS>')
+
+-- local leader s to invoke Rg
+vim.api.nvim_set_keymap('n', '<localleader>s', ':Rg ', { noremap = true, silent = false })
