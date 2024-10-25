@@ -78,3 +78,7 @@ vim.opt.colorcolumn = '80'
 
 -- also, show tabs nicer
 vim.opt.listchars = 'tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•'
+
+-- set ripgrep as default grepprg
+vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case --hidden'
+-- vim.opt.grepformat = '%f:%l:%c:%m'
