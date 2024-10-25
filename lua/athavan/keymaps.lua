@@ -78,3 +78,6 @@ vim.keymap.set('c', '%s/', '%sm/')
 -- let the left and right arrows be useful: they can switch buffers
 vim.keymap.set('n', '<left>', ':bp<cr>')
 vim.keymap.set('n', '<right>', ':bn<cr>')
+
+-- delete 1 char back in insert mode
+vim.keymap.set('i', '<C-b>', '<BS>')

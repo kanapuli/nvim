@@ -71,6 +71,7 @@ vim.opt.scrolloff = 10
 
 -- set relative number on
 vim.opt.relativenumber = true
+-- set hybrid number on
 
 -- set color column to 80
 vim.opt.colorcolumn = '80'
