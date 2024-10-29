@@ -13,3 +13,4 @@ R = function(name)
   return require(name)
 end
 
+vim.cmd ':Copilot disable'
