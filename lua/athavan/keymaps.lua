@@ -58,7 +58,7 @@ vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move focus to th
 vim.keymap.set('n', '<localleader>g', '<cmd>Git<CR>', { desc = 'Open Git window' })
 
 -- keymap to open file list
--- vim.keymap.set('n', '<C-p>', '<cmd>Files<CR>', { desc = 'Open file list' })
+vim.keymap.set('n', '<C-p>', '<cmd>FZF<CR>', { desc = 'Open file list' })
 
 -- leader leader will toggle buffer
 vim.keymap.set('n', '<localleader><localleader>', '<C-^>', { desc = 'Toggle buffer' })

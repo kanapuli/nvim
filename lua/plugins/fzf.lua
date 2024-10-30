@@ -41,7 +41,6 @@ return {
     -- calling `setup` is optional for customization
     require('fzf-lua').setup { 'fzf-native' }
     local f = require 'fzf-lua'
-    vim.keymap.set('n', '<c-p>', "<cmd>lua require('fzf-lua').files()<CR>", { noremap = true, silent = true })
     vim.keymap.set('n', '<c-e>', f.oldfiles, { noremap = true, silent = true })
     vim.keymap.set('n', '<leader>sg', f.live_grep, { noremap = true, silent = true })
     vim.keymap.set('n', '<leader>sb', f.buffers, { noremap = true, silent = true })
