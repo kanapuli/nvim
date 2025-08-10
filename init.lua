@@ -403,15 +403,9 @@ require('lazy').setup {
         require('mason-lspconfig').setup {
           ensure_installed = {
             'bashls',
-            'black',
             'clangd',
-            'delve',
             'dockerls',
             'gopls',
-            'gotests',
-            'isort',
-            'goimports',
-            'gofumpt',
             'jsonls',
             'pyright',
             'lua_ls',
@@ -419,6 +413,20 @@ require('lazy').setup {
             'rust_analyzer',
             'yamlls',
           },
+        }
+      end,
+    },
+    {
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      config = function()
+        require('mason-tool-installer').setup {
+          'black',
+          'delve',
+          'isort',
+          'gotests',
+          'goimports',
+          'gofumpt',
+          'ruff',
         }
       end,
     },
