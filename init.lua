@@ -1,3 +1,4 @@
+local vim = vim
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -34,7 +35,7 @@ vim.opt.listchars = 'tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•'
 -----------------------------------------------------------------------------
 vim.keymap.set('n', '<leader>w', '<cmd>w<cr>', {})
 -- localleader localleader - toggle between buffers
-vim.keymap.set('n', '<leader><leader>', '<c-^>')
+vim.keymap.set('n', '<localleader><localleader>', '<c-^>')
 
 -- always center search results
 vim.keymap.set('n', 'n', 'nzz', { silent = true })
@@ -400,15 +401,144 @@ require('lazy').setup {
       },
       config = function()
         require('mason-lspconfig').setup {
-          ensure_installed = { 'lua_ls', 'gopls', 'isort', 'black', 'ruff', 'rust_analyzer', 'goimports', 'gofumpt' },
+          ensure_installed = {
+            'bashls',
+            'black',
+            'clangd',
+            'delve',
+            'dockerls',
+            'gopls',
+            'gotests',
+            'isort',
+            'goimports',
+            'gofumpt',
+            'jsonls',
+            'pyright',
+            'lua_ls',
+            'ruff',
+            'rust_analyzer',
+            'yamlls',
+          },
         }
       end,
     },
+    {
+      'windwp/nvim-autopairs',
+      event = 'InsertEnter',
+      config = true,
+      -- use opts = {} for passing setup options
+      -- this is equivalent to setup({}) function
+    },
+    -- Debug support for nvim
+    {
+      'mfussenegger/nvim-dap',
+      recommended = true,
+      desc = 'Debugging support. Requires language specific adapters to be configured. (see lang extras)',
+
+      dependencies = {
+        'rcarriga/nvim-dap-ui',
+        -- virtual text for the debugger
+        {
+          'theHamsta/nvim-dap-virtual-text',
+          opts = {},
+        },
+      },
+
+  -- stylua: ignore
+  keys = {
+    { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+    { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+    { "<leader>dc", function() require("dap").continue() end, desc = "Run/Continue" },
+    { "<leader>da", function() require("dap").continue({ before = get_args }) end, desc = "Run with Args" },
+    { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+    { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
+    { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
+    { "<leader>dj", function() require("dap").down() end, desc = "Down" },
+    { "<leader>dk", function() require("dap").up() end, desc = "Up" },
+    { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+    { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
+    { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+    { "<leader>dP", function() require("dap").pause() end, desc = "Pause" },
+    { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+    { "<leader>ds", function() require("dap").session() end, desc = "Session" },
+    { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
+    { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+  },
+    },
+    {
+      'rcarriga/nvim-dap-ui',
+      dependencies = { 'nvim-neotest/nvim-nio' },
+  -- stylua: ignore
+  keys = {
+    { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+    { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+  },
+      opts = {},
+      config = function(_, opts)
+        local dap = require 'dap'
+        local dapui = require 'dapui'
+        dapui.setup(opts)
+        dap.listeners.after.event_initialized['dapui_config'] = function()
+          dapui.open {}
+        end
+        dap.listeners.before.event_terminated['dapui_config'] = function()
+          dapui.close {}
+        end
+        dap.listeners.before.event_exited['dapui_config'] = function()
+          dapui.close {}
+        end
+      end,
+    },
+    {
+      'jay-babu/mason-nvim-dap.nvim',
+      dependencies = 'mason.nvim',
+      cmd = { 'DapInstall', 'DapUninstall' },
+      opts = {
+        -- Makes a best effort to setup the various debuggers with
+        -- reasonable debug configurations
+        automatic_installation = true,
+
+        -- You can provide additional configuration to the handlers,
+        -- see mason-nvim-dap README for more information
+        handlers = {},
+
+        -- You'll need to check that you have the required things installed
+        -- online, please don't ask me how to install them :)
+        ensure_installed = {
+          -- Update this to ensure that you have the debuggers for the langs you want
+        },
+      },
+      -- mason-nvim-dap is loaded when nvim-dap loads
+      config = function() end,
+    },
+    -- Debug support for go
+    {
+      'leoluz/nvim-dap-go',
+      opts = {},
+      config = function()
+        require('dap-go').setup {
+          dap_configurations = {
+            {
+              type = 'go',
+              name = 'Debug (Build Flags & Arguments)',
+              request = 'launch',
+              program = '${file}',
+              args = require('dap-go').get_arguments,
+              buildFlags = require('dap-go').get_build_flags,
+            },
+          },
+        }
+      end,
+    },
+    {
+      'fredrikaverpil/neotest-golang',
+    },
+    {
+      'nvim-treesitter/nvim-treesitter',
+      opts = { ensure_installed = { 'go', 'gomod', 'gowork', 'gosum' } },
+    },
   },
   -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  -- install = { colorscheme = { "habamax" } },
-  -- main color scheme
   -- automatically check for plugin updates
   checker = { enabled = true },
 }
