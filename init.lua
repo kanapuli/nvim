@@ -545,6 +545,22 @@ require('lazy').setup {
       'nvim-treesitter/nvim-treesitter',
       opts = { ensure_installed = { 'go', 'gomod', 'gowork', 'gosum' } },
     },
+
+    -- file explorer setup
+    {
+      'stevearc/oil.nvim',
+      ---@module 'oil'
+      ---@type oil.SetupOpts
+      opts = {},
+      -- Optional dependencies
+      dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+      -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+      -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+      lazy = false,
+      config = function()
+        require('oil').setup()
+      end,
+    },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- automatically check for plugin updates
