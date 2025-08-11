@@ -33,7 +33,8 @@ vim.opt.listchars = 'tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•'
 -----------------------------------------------------------------------------
 --------------------- KEYMAPS
 -----------------------------------------------------------------------------
-vim.keymap.set('n', '<leader>w', '<cmd>w<cr>', {})
+vim.keymap.set('n', '<C-s>', ':w<cr>', {})
+vim.keymap.set('i', '<C-s>', '<esc>:w<cr>', {})
 -- localleader localleader - toggle between buffers
 vim.keymap.set('n', '<localleader><localleader>', '<c-^>')
 
@@ -86,34 +87,23 @@ require('lazy').setup {
   spec = {
     -- add your plugins here
     -- MAIN COLOR SCHEME
+    -- nice bar at the bottom
     {
-      'wincent/base16-nvim',
-      lazy = false, -- load at start
-      priority = 1000, -- load first
+      'ellisonleao/gruvbox.nvim',
+      priority = 1000,
       config = function()
-        vim.cmd [[colorscheme gruvbox-dark-hard]]
+        vim.cmd [[colorscheme gruvbox]]
         vim.o.background = 'dark'
-        vim.cmd [[hi Normal ctermbg=NONE]]
-        -- Less visible window separator
-        vim.api.nvim_set_hl(0, 'WinSeparator', { fg = 1250067 })
-        -- Make comments more prominent -- they are important.
-        local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
-        vim.api.nvim_set_hl(0, 'Comment', bools)
-        -- Make it clearly visible which argument we're at.
-        local marked = vim.api.nvim_get_hl(0, { name = 'PMenu' })
-        vim.api.nvim_set_hl(
-          0,
-          'LspSignatureActiveParameter',
-          { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true }
-        )
-        -- XXX
-        -- Would be nice to customize the highlighting of warnings and the like to make
-        -- them less glaring. But alas
-        -- https://github.com/nvim-lua/lsp_extensions.nvim/issues/21
-        -- call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
       end,
     },
-    -- nice bar at the bottom
+    {
+      'folke/tokyonight.nvim',
+      -- lazy = true,
+      opts = { style = 'night' },
+      config = function()
+        vim.cmd [[colorscheme tokyonight]]
+      end,
+    },
     {
       'itchyny/lightline.vim',
       lazy = false, -- also load at start since it's UI
@@ -156,10 +146,17 @@ require('lazy').setup {
     },
     -- quick navigation
     {
-      'ggandor/leap.nvim',
-      config = function()
-        require('leap').create_default_mappings()
-      end,
+      'folke/flash.nvim',
+      event = 'VeryLazy',
+      opts = {},
+  -- stylua: ignore
+  keys = {
+    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+  },
     },
     -- better %
     {
@@ -241,6 +238,21 @@ require('lazy').setup {
           gofumpt = true,
         })
         vim.lsp.enable 'gopls'
+
+        vim.lsp.config('clangd', {
+          cmd = { 'clangd' },
+          filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+          root_markers = { '.clangd', '.git' },
+          capabilities = {
+            offsetEncoding = { 'utf-8', 'utf-16' },
+            textDocument = {
+              completion = {
+                editsNearCursor = true,
+              },
+            },
+          },
+        })
+        vim.lsp.enable 'clangd'
 
         -- Global mappings.
         -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -403,7 +415,7 @@ require('lazy').setup {
         require('mason-lspconfig').setup {
           ensure_installed = {
             'bashls',
-            'clangd',
+            -- 'clangd',
             'dockerls',
             'gopls',
             'jsonls',
@@ -543,7 +555,7 @@ require('lazy').setup {
     },
     {
       'nvim-treesitter/nvim-treesitter',
-      opts = { ensure_installed = { 'go', 'gomod', 'gowork', 'gosum' } },
+      opts = { ensure_installed = { 'go', 'gomod', 'gowork', 'gosum', 'c', 'lua', 'vim', 'vimdoc', 'rust' } },
     },
 
     -- file explorer setup
@@ -559,7 +571,29 @@ require('lazy').setup {
       lazy = false,
       config = function()
         require('oil').setup()
+        vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
       end,
+    },
+    -- Git integration
+    {
+      'kdheepak/lazygit.nvim',
+      lazy = true,
+      cmd = {
+        'LazyGit',
+        'LazyGitConfig',
+        'LazyGitCurrentFile',
+        'LazyGitFilter',
+        'LazyGitFilterCurrentFile',
+      },
+      -- optional for floating window border decoration
+      dependencies = {
+        'nvim-lua/plenary.nvim',
+      },
+      -- setting the keybinding for LazyGit with 'keys' is recommended in
+      -- order to load the plugin when the command is run for the first time
+      keys = {
+        { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      },
     },
   },
   -- Configure any other settings here. See the documentation for more details.
