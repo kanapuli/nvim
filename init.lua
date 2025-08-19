@@ -23,6 +23,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 vim.opt.relativenumber = true
+vim.opt.number = true
 vim.opt.wrap = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
@@ -59,6 +60,14 @@ vim.diagnostic.config { virtual_text = true, virtual_lines = false }
 -----------------------------------------------------------------------------
 --------------------- AUTOCMDS
 -----------------------------------------------------------------------------
+
+-- autocmd to update Lazyvim updates when entering vim
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    require('lazy').update { show = false }
+  end,
+})
+
 -- highlight yanked text
 vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
@@ -101,7 +110,7 @@ require('lazy').setup {
       -- lazy = true,
       opts = { style = 'night' },
       config = function()
-        vim.cmd [[colorscheme tokyonight]]
+        -- vim.cmd [[colorscheme tokyonight]]
       end,
     },
     {
@@ -306,52 +315,77 @@ require('lazy').setup {
     },
     -- LSP-based code-completion
     {
-      'hrsh7th/nvim-cmp',
-      -- load cmp on InsertEnter
-      event = 'InsertEnter',
-      -- these dependencies will only be loaded when cmp loads
-      -- dependencies are always lazy-loaded unless specified otherwise
-      dependencies = {
-        'neovim/nvim-lspconfig',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-      },
-      config = function()
-        local cmp = require 'cmp'
-        cmp.setup {
-          snippet = {
-            -- REQUIRED by nvim-cmp. get rid of it once we can
-            expand = function(args)
-              vim.snippet.expand(args.body)
-            end,
-          },
-          mapping = cmp.mapping.preset.insert {
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.abort(),
-            -- Accept currently selected item.
-            -- Set `select` to `false` to only confirm explicitly selected items.
-            ['<CR>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Insert },
-          },
-          sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
-          }, {
-            { name = 'path' },
-          }),
-          experimental = {
-            ghost_text = true,
-          },
-        }
+      'saghen/blink.cmp',
+      -- optional: provides snippets for the snippet source
+      dependencies = { 'rafamadriz/friendly-snippets' },
 
-        -- Enable completing paths in :
-        cmp.setup.cmdline(':', {
-          sources = cmp.config.sources {
-            { name = 'path' },
+      -- use a release tag to download pre-built binaries
+      version = '1.*',
+      -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+      -- build = 'cargo build --release',
+      -- If you use nix, you can build from source using latest nightly rust with:
+      -- build = 'nix run .#build-plugin',
+
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
+      opts = {
+        -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+        -- 'super-tab' for mappings similar to vscode (tab to accept)
+        -- 'enter' for enter to accept
+        -- 'none' for no mappings
+        --
+        -- All presets have the following mappings:
+        -- C-space: Open menu or open docs if already open
+        -- C-n/C-p or Up/Down: Select next/previous item
+        -- C-e: Hide menu
+        -- C-k: Toggle signature help (if signature.enabled = true)
+        --
+        -- See :h blink-cmp-config-keymap for defining your own keymap
+        keymap = {
+          preset = 'default',
+          ['<CR>'] = { 'accept', 'fallback' },
+        },
+
+        appearance = {
+          -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+          -- Adjusts spacing to ensure icons are aligned
+          nerd_font_variant = 'mono',
+        },
+
+        -- (Default) Only show the documentation popup when manually triggered
+        completion = { documentation = { auto_show = false } },
+
+        -- Default list of enabled providers defined so that you can extend it
+        -- elsewhere in your config, without redefining it, due to `opts_extend`
+        sources = {
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
+        },
+
+        -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+        -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+        -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+        --
+        -- See the fuzzy documentation for more information
+        fuzzy = { implementation = 'prefer_rust_with_warning' },
+      },
+      opts_extend = { 'sources.default' },
+    },
+    {
+      'olimorris/codecompanion.nvim',
+      opts = {
+        strategies = {
+          chat = {
+            adapter = 'anthropic',
           },
-        })
-      end,
+          inline = {
+            adapter = 'anthropic',
+          },
+        },
+      },
+      dependencies = {
+        'nvim-lua/plenary.nvim',
+        'nvim-treesitter/nvim-treesitter',
+      },
     },
     -- yaml
     {
