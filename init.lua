@@ -57,9 +57,26 @@ vim.keymap.set('n', '<leader>p', '<cmd>bp<cr>')
 -- Allow virtual text
 vim.diagnostic.config { virtual_text = true, virtual_lines = false }
 
+-- Toggle term
+vim.keymap.set('n', '<C-t>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', { silent = true })
+vim.keymap.set('i', '<esc><C-t>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', { silent = true })
+vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
+vim.keymap.set('t', 'jk', [[<C-\><C-n>]])
+vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]])
+vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]])
+vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]])
+vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]])
+vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]])
 -----------------------------------------------------------------------------
 --------------------- AUTOCMDS
 -----------------------------------------------------------------------------
+---
+---autocmd for terminal togging
+vim.api.nvim_create_autocmd('TermEnter', {
+  callback = function()
+    vim.keymap.set('t', '<C-t>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', { silent = true })
+  end,
+})
 
 -- autocmd to update Lazyvim updates when entering vim
 vim.api.nvim_create_autocmd('VimEnter', {
@@ -292,8 +309,8 @@ require('lazy').setup {
               print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, opts)
             --vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-            vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
-            vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, opts)
+            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+            vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
             vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
             vim.keymap.set('n', '<leader>f', function()
               vim.lsp.buf.format { async = true }
@@ -628,6 +645,13 @@ require('lazy').setup {
       keys = {
         { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
       },
+    },
+    {
+      'akinsho/toggleterm.nvim',
+      version = '*',
+      config = function()
+        require('toggleterm').setup()
+      end,
     },
   },
   -- Configure any other settings here. See the documentation for more details.
