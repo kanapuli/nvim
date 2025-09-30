@@ -100,7 +100,7 @@ return {
       desc = 'Notification History',
     },
     {
-      '<c-/>',
+      '<C-t>',
       function()
         Snacks.terminal()
       end,
