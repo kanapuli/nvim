@@ -97,6 +97,9 @@ vim.g.have_nerd_font = false
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
+--
+--  Reload files from the disk
+vim.o.autoread = true
 
 -- Make line numbers default
 vim.o.number = true
@@ -784,6 +787,9 @@ require('lazy').setup({
         'golangci-lint-langserver',
         'ruff',
         'pyright',
+        'jsonlint',
+        'json-lsp',
+        'json-to-struct',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

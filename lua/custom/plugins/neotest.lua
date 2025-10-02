@@ -155,5 +155,42 @@ return {
   {
     'theHamsta/nvim-dap-virtual-text',
     opts = {},
+    config = function()
+      require('nvim-dap-virtual-text').setup {
+        enabled = true,
+        enabled_commands = true,
+        show_stop_reason = true,
+        commented = false,
+        all_references = false,
+        clear_on_continue = false,
+        only_first_definition = true,
+        highlight_changed_variables = true,
+        highlight_new_as_changed = false,
+        --- A callback that determines how a variable is displayed or whether it should be omitted
+        --- @param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
+        --- @param buf number
+        --- @param stackframe dap.StackFrame https://microsoft.github.io/debug-adapter-protocol/specification#Types_StackFrame
+        --- @param node userdata tree-sitter node identified as variable definition of reference (see `:h tsnode`)
+        --- @param options nvim_dap_virtual_text_options Current options for nvim-dap-virtual-text
+        --- @return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
+        display_callback = function(variable, buf, stackframe, node, options)
+          -- by default, strip out new line characters
+          if options.virt_text_pos == 'inline' then
+            return ' = ' .. variable.value:gsub('%s+', ' ')
+          else
+            return variable.name .. ' = ' .. variable.value:gsub('%s+', ' ')
+          end
+        end,
+        -- position of virtual text, see `:h nvim_buf_set_extmark()`, default tries to inline the virtual text. Use 'eol' to set to end of line
+        -- virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol',
+        virt_text_pos = 'eol',
+
+        -- experimental features:
+        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = nil, -- position the virtual text at a fixed window column (starting from the first text column) ,
+        -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
+      }
+    end,
   },
 }

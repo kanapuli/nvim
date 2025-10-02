@@ -2,6 +2,13 @@ return {
   'folke/snacks.nvim',
   priority = 1000,
   lazy = false,
+  config = function()
+    require('snacks').setup {
+      picker = {
+        show_hidden = true,
+      },
+    }
+  end,
   ---@type snacks.Config
   opts = {
     -- your configuration comes here
