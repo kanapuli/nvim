@@ -6,6 +6,7 @@ return {
     require('snacks').setup {
       picker = {
         show_hidden = true,
+        ignored = true,
       },
     }
   end,
@@ -28,6 +29,18 @@ return {
     words = { enabled = true },
   },
   keys = {
+    {
+      ',,',
+      function()
+        Snacks.picker.git_files { ignored = true, hidden = true }
+      end,
+    },
+    {
+      ',f',
+      function()
+        Snacks.picker.files { ignored = true, hidden = true }
+      end,
+    },
     {
       '\\',
       function()
