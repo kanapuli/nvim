@@ -107,6 +107,36 @@ return {
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
+      expand_lines = true,
+      controls = { enabled = false },
+      floating = { border = 'rounded' },
+      render = {
+        max_type_length = 60,
+        max_value_lines = 200,
+      },
+      layouts = {
+        {
+          elements = {
+            { id = 'scopes', size = 1.0 },
+          },
+          size = 5,
+          position = 'bottom',
+        },
+        {
+          elements = {
+            { id = 'repl', size = 0.25 },
+          },
+          size = 5,
+          position = 'bottom',
+        },
+        {
+          elements = {
+            { id = 'watches', size = 0.10 },
+          },
+          size = 2,
+          position = 'bottom',
+        },
+      },
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
@@ -126,6 +156,11 @@ return {
       },
     }
 
+    local map, opts = vim.keymap.set, { noremap = true, silent = true }
+    map({ 'n', 'v' }, 'Q', function()
+      require('dapui').eval()
+    end, { noremap = true, silent = true, desc = 'Hover a single value' })
+
     -- Change breakpoint icons
     vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
     vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
@@ -140,7 +175,6 @@ return {
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    -- Athavan: I don't want the dap ui to be closed as I miss the log info
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
