@@ -27,6 +27,8 @@ return {
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+    git = { enabled = true },
+    zen = { enabled = true },
   },
   keys = {
     {
@@ -99,6 +101,21 @@ return {
       desc = 'Git Log File',
     },
     {
+      '<leader>gg',
+      function()
+        Snacks.lazygit()
+      end,
+      desc = 'Lazygit',
+    },
+    {
+      '<leader>gB',
+      function()
+        Snacks.gitbrowse()
+      end,
+      desc = 'Git Browse',
+      mode = { 'n', 'v' },
+    },
+    {
       '<leader>z',
       function()
         Snacks.zen()
@@ -125,6 +142,22 @@ return {
         Snacks.terminal()
       end,
       desc = 'Toggle Terminal',
+    },
+    {
+      ']]',
+      function()
+        Snacks.words.jump(vim.v.count1)
+      end,
+      desc = 'Next Reference',
+      mode = { 'n', 't' },
+    },
+    {
+      '[[',
+      function()
+        Snacks.words.jump(-vim.v.count1)
+      end,
+      desc = 'Prev Reference',
+      mode = { 'n', 't' },
     },
   },
 }
