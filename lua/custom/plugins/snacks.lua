@@ -147,6 +147,14 @@ return {
       mode = { 'n', 'v' },
     },
     {
+      '<leader>ga',
+      function()
+        Snacks.git.blame_line()
+      end,
+      desc = 'Git Blame',
+      mode = { 'n', 'v' },
+    },
+    {
       '<leader>z',
       function()
         Snacks.zen()

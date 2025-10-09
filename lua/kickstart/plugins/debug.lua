@@ -23,6 +23,13 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    {
+      'daic0r/dap-helper.nvim',
+      dependencies = { 'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap' },
+      config = function()
+        require('dap-helper').setup()
+      end,
+    },
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -117,23 +124,23 @@ return {
       layouts = {
         {
           elements = {
+            { id = 'repl', size = 1.0 },
+          },
+          size = 20,
+          position = 'bottom',
+        },
+        -- {
+        --   elements = {
+        --     { id = 'watches', size = 1.0 },
+        --   },
+        --   size = 3,
+        --   position = 'bottom',
+        -- },
+        {
+          elements = {
             { id = 'scopes', size = 1.0 },
           },
           size = 5,
-          position = 'bottom',
-        },
-        {
-          elements = {
-            { id = 'repl', size = 0.25 },
-          },
-          size = 5,
-          position = 'bottom',
-        },
-        {
-          elements = {
-            { id = 'watches', size = 0.10 },
-          },
-          size = 2,
           position = 'bottom',
         },
       },

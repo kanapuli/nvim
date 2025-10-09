@@ -98,6 +98,10 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 --
+vim.o.wrap = true
+vim.o.colorcolumn = '140'
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#ff6b6b' })
+
 --  Reload files from the disk
 vim.o.autoread = true
 vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained' }, {
@@ -783,18 +787,28 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'goimports',
+        'goimports-reviser',
         'gofumpt',
         'gomodifytags',
-        'impl',
-        'delve',
         'golangci-lint',
         'golangci-lint-langserver',
+        'gopls',
+        'golines',
+        'gotests',
+        'gotestsum',
+        'iferr',
+        'impl',
+        'delve',
         'ruff',
+        'rust-analyzer',
         'pyright',
         'jsonlint',
         'json-lsp',
         'json-to-struct',
+        'shellcheck',
+        'shfmt',
+        'staticcheck',
+        'stylua',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -847,7 +861,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports', 'gofumpt' },
+        go = { 'goimports-reviser', 'gofumpt' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
         sh = { 'shfmt' },
@@ -1035,7 +1049,7 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
+  -- require 'custom.packages.breakpoint',
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -1067,6 +1081,9 @@ require('lazy').setup({
     },
   },
 })
+
+-- vim.keymap.set({ 'n', 'i', 'v' }, '<F8>', '<cmd>lua require"dap".clear_breakpoints();store_breakpoints(true)<CR>')
+-- vim.keymap.set({ 'n', 'i', 'v' }, '<F9>', '<cmd>lua require"dap".toggle_breakpoint();store_breakpoints(false)<CR>')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
