@@ -3,34 +3,44 @@ return {
   lazy = false,
   branch = 'main',
   build = ':TSUpdate',
+  lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+  event = { 'VeryLazy' },
+  cmd = { 'TSUpdate', 'TSInstall', 'TSLog', 'TSUninstall' },
+  opts_extend = { 'ensure_installed' },
   config = function()
     require('nvim-treesitter').setup {
       install_dir = vim.fn.stdpath 'data' .. '/site',
     }
-    require('nvim-treesitter').install {
-      'rust',
-      'javascript',
-      'zig',
-      'go',
-      'gomod',
-      'gowork',
-      'gotmpl',
-      'gosum',
-      'python',
-      'markdown',
-      'rego',
+  end,
+  opts = {
+    indent = { enable = true }, ---@type lazyvim.TSFeat
+    highlight = { enable = true }, ---@type lazyvim.TSFeat
+    folds = { enable = true }, ---@type lazyvim.TSFeat
+    ensure_installed = {
+      'bash',
       'c',
-      'clojure',
-      'gitcommit',
-      'gitignore',
+      'diff',
+      'html',
+      'javascript',
+      'jsdoc',
       'json',
-      'kotlin',
+      'jsonc',
       'lua',
       'luadoc',
-      'yaml',
+      'luap',
+      'markdown',
+      'markdown_inline',
+      'printf',
+      'python',
+      'query',
+      'regex',
       'toml',
-      'tmux',
+      'tsx',
       'typescript',
-    }
-  end,
+      'vim',
+      'vimdoc',
+      'xml',
+      'yaml',
+    },
+  },
 }
