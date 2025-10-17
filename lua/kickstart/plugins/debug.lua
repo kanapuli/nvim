@@ -129,13 +129,13 @@ return {
           size = 20,
           position = 'bottom',
         },
-        -- {
-        --   elements = {
-        --     { id = 'watches', size = 1.0 },
-        --   },
-        --   size = 3,
-        --   position = 'bottom',
-        -- },
+        {
+          elements = {
+            { id = 'watches', size = 1.0 },
+          },
+          size = 3,
+          position = 'bottom',
+        },
         {
           elements = {
             { id = 'scopes', size = 1.0 },

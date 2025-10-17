@@ -24,10 +24,10 @@ return {
     opts = function(_, opts)
       opts.adapters = opts.adapters or {}
       opts.adapters['neotest-golang'] = {
+        runner = 'gotestsum',
         dap_go_enabled = true,
         go_test_args = {
           '-v',
-          '-race',
           '-coverprofile=' .. vim.fn.getcwd() .. '/coverage.out',
         },
       }
