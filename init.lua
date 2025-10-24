@@ -789,7 +789,6 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'goimports-reviser',
         'gofumpt',
-        'gofmt',
         'gomodifytags',
         'golangci-lint',
         'golangci-lint-langserver',
