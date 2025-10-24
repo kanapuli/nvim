@@ -789,6 +789,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'goimports-reviser',
         'gofumpt',
+        'gofmt',
         'gomodifytags',
         'golangci-lint',
         'golangci-lint-langserver',
@@ -851,7 +852,7 @@ require('lazy').setup({
         },
         formatters_by_ft = {
           lua = { 'stylua' },
-          go = { 'goimports-reviser', 'gofumpt', 'golines' },
+          go = { 'goimports-reviser', 'gofmt' },
           -- Conform can also run multiple formatters sequentially
           python = { 'isort', 'black' },
           sh = { 'shfmt' },
