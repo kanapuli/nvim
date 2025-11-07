@@ -98,6 +98,7 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 --
+vim.o.termguicolors = true
 vim.o.wrap = true
 vim.o.colorcolumn = '140'
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#ff6b6b' })
@@ -711,28 +712,28 @@ require('lazy').setup({
               gofumpt = true,
               codelenses = {
                 gc_details = false,
-                test = true,
-                tidy = true,
-                vendor = true,
+                test = false,
+                tidy = false,
+                vendor = false,
               },
               hints = {
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
-                constantValuse = true,
+                compositeLiteralFields = false,
+                compositeLiteralTypes = false,
+                constantValues = false,
                 functionTypeParameters = false,
                 parameterNames = false,
               },
               analyses = {
-                nilness = true,
-                unusedparams = true,
-                unusedwrite = true,
-                useany = true,
+                nilness = false,
+                unusedparams = false,
+                unusedwrite = false,
+                useany = false,
               },
-              usePlaceholders = true,
+              usePlaceholders = false,
               completeUnimported = true,
-              staticcheck = true,
-              directoryFilters = { '-.git', '-.vscode', '-.idea', '-node_modules' },
-              semanticTokens = true,
+              staticcheck = false,
+              directoryFilters = { '-.git', '-.vscode', '-.idea', '-node_modules', 'vendor' },
+              semanticTokens = false,
             },
           },
         },
