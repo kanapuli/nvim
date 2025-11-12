@@ -115,7 +115,7 @@ return {
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
       expand_lines = true,
-      controls = { enabled = false },
+      controls = { enabled = true },
       floating = { border = 'rounded' },
       render = {
         max_type_length = 60,

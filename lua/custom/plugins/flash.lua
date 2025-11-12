@@ -4,9 +4,9 @@ return {
 
   ---@type Flash.Config
   opts = {},
-  config = function()
-    require('flash').jump()
-  end,
+  -- config = function()
+  --   require('flash').jump()
+  -- end,
   -- stylua: ignore
   keys = {
     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
