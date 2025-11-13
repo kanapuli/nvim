@@ -235,6 +235,36 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Autoimport for golang
+
+-- Define an augroup for Go-specific LSP things
+vim.api.nvim_create_augroup('GoLspActions', { clear = true })
+
+-- Example: Run organize imports on save (requires gopls support)
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.go',
+  group = 'GoLspActions',
+  callback = function()
+    -- Check if the LSP client supports the organizeImports code action
+    local clients = vim.lsp.get_clients()
+    local gopls_client_id
+    for _, client in ipairs(clients) do
+      if client.name == 'gopls' then
+        gopls_client_id = client.id
+        break
+      end
+    end
+
+    if gopls_client_id then
+      -- Request code actions for the entire buffer
+      vim.lsp.buf.code_action {
+        context = { only = { 'source.organizeImports' } },
+        apply = true, -- Apply the action immediately if found
+      }
+    end
+  end,
+})
+
 --Autoinstall from grammar
 vim.api.nvim_create_autocmd('User', {
   pattern = 'TSUpdate',
