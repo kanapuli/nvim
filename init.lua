@@ -1112,6 +1112,31 @@ require('lazy').setup({
   },
 })
 
+--[[
+--
+-- Custom Autocmds
+--
+--]]
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, 'n', '<c-r>', ':! luajit %<CR>', { noremap = true, desc = 'Run Lua File' })
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'go',
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, 'n', '<c-r>', ':! go run %<CR>', { noremap = true, desc = 'Run Go File' })
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'python',
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, 'n', '<c-r>', ':!python3 %<CR>', { noremap = true, desc = 'Run Python File' })
+  end,
+})
 -- vim.keymap.set({ 'n', 'i', 'v' }, '<F8>', '<cmd>lua require"dap".clear_breakpoints();store_breakpoints(true)<CR>')
 -- vim.keymap.set({ 'n', 'i', 'v' }, '<F9>', '<cmd>lua require"dap".toggle_breakpoint();store_breakpoints(false)<CR>')
 

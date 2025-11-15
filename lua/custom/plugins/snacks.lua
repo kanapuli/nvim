@@ -78,7 +78,7 @@ return {
     },
 
     {
-      '<leader>sf',
+      '<c-p>',
       function()
         Snacks.picker.files { ignored = true, hidden = true }
       end,
