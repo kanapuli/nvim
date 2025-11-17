@@ -5,6 +5,18 @@
 return {
   {
     'shortcuts/no-neck-pain.nvim',
+    version = '*',
+    opts = {
+      mappings = {
+        enabled = true,
+        toggle = false,
+        toggleLeftSide = false,
+        toggleRightSide = false,
+        widthUp = false,
+        widthDown = false,
+        scratchPad = false,
+      },
+    },
     config = function()
       require('no-neck-pain').setup {
         vim.keymap.set('n', '<leader>np', '<cmd>NoNeckPain<CR>', { desc = '[N]o [N]eck [P]ain' }),
