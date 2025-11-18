@@ -241,29 +241,29 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_augroup('GoLspActions', { clear = true })
 
 -- Example: Run organize imports on save (requires gopls support)
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*.go',
-  group = 'GoLspActions',
-  callback = function()
-    -- Check if the LSP client supports the organizeImports code action
-    local clients = vim.lsp.get_clients()
-    local gopls_client_id
-    for _, client in ipairs(clients) do
-      if client.name == 'gopls' then
-        gopls_client_id = client.id
-        break
-      end
-    end
-
-    if gopls_client_id then
-      -- Request code actions for the entire buffer
-      vim.lsp.buf.code_action {
-        context = { only = { 'source.organizeImports' } },
-        apply = true, -- Apply the action immediately if found
-      }
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*.go',
+--   group = 'GoLspActions',
+--   callback = function()
+--     -- Check if the LSP client supports the organizeImports code action
+--     local clients = vim.lsp.get_clients()
+--     local gopls_client_id
+--     for _, client in ipairs(clients) do
+--       if client.name == 'gopls' then
+--         gopls_client_id = client.id
+--         break
+--       end
+--     end
+--
+--     if gopls_client_id then
+--       -- Request code actions for the entire buffer
+--       vim.lsp.buf.code_action {
+--         context = { only = { 'source.organizeImports' } },
+--         apply = true, -- Apply the action immediately if found
+--       }
+--     end
+--   end,
+-- })
 
 --Autoinstall from grammar
 vim.api.nvim_create_autocmd('User', {
@@ -1000,28 +1000,42 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+  {
+    'rebelot/kanagawa.nvim',
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
+      require('kanagawa').setup {
+        theme = 'wave',
+        background = {
+          -- dark = 'dragon',
+          dark = 'wave',
+          light = 'lotus',
         },
       }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'kanagawa-wave'
     end,
   },
+
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'folke/tokyonight.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     require('tokyonight').setup {
+  --       styles = {
+  --         comments = { italic = false }, -- Disable italics in comments
+  --       },
+  --     }
+  --
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --     vim.cmd.colorscheme 'tokyonight-night'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
