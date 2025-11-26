@@ -80,7 +80,7 @@ return {
     {
       '<c-p>',
       function()
-        Snacks.picker.files { ignored = true, hidden = true }
+        Snacks.picker.files { ignored = false, hidden = false }
       end,
     },
     -- git

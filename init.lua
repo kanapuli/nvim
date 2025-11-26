@@ -771,11 +771,67 @@ require('lazy').setup({
           cmd_env = { RUFF_TRACE = 'messages' },
           init_options = {
             settings = {
-              logLevel = 'error',
+              logLevel = 'info',
+              configuration = './ruff.toml',
+              fixAll = false,
+              organizeImports = false,
+              showSyntaxErrors = false,
+              lint = {
+                enable = false,
+              },
             },
           },
         },
-        pyright = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                -- Type checking
+                typeCheckingMode = 'off', -- off, basic, standard, strict, recommended, all
+
+                -- Diagnostic settings
+                diagnosticMode = 'workspace', -- "openFilesOnly" or "workspace"
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+
+                -- Inlay hints (basedpyright exclusive features)
+                inlayHints = {
+                  variableTypes = false,
+                  callArgumentNames = false,
+                  callArgumentNamesMatching = false,
+                  functionReturnTypes = false,
+                  genericTypes = false,
+                },
+
+                -- Auto-completion settings
+                autoImportCompletions = true,
+                autoFormatStrings = true,
+
+                -- Diagnostic severity overrides
+                -- diagnosticSeverityOverrides = {
+                --   reportUnusedImport = 'information',
+                --   reportUnusedFunction = 'information',
+                --   reportUnusedVariable = 'information',
+                --   reportGeneralTypeIssues = 'error',
+                --   reportOptionalMemberAccess = 'warning',
+                -- },
+              },
+            },
+          },
+        },
+        -- ty = {
+        --   settings = {
+        --     ty = {
+        --       inlayHints = {
+        --         variableTypes = false,
+        --       },
+        --       experimental = {
+        --         rename = false,
+        --         autoImport = false,
+        --       },
+        --     },
+        --   },
+        -- },
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -831,8 +887,10 @@ require('lazy').setup({
         'impl',
         'delve',
         'ruff',
+        'basedpyright',
+        -- 'mypy',
+        -- 'ty',
         'rust-analyzer',
-        'pyright',
         'jsonlint',
         'json-lsp',
         'json-to-struct',
@@ -845,7 +903,7 @@ require('lazy').setup({
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -884,7 +942,7 @@ require('lazy').setup({
           lua = { 'stylua' },
           go = { 'goimports-reviser', 'gofmt' },
           -- Conform can also run multiple formatters sequentially
-          python = { 'isort', 'black' },
+          python = { 'ruff' },
           sh = { 'shfmt' },
           --
           -- You can use 'stop_after_first' to run the first available formatter from the list

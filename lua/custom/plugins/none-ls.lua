@@ -30,7 +30,7 @@ return {
       nls.builtins.code_actions.gitsigns,
       nls.builtins.code_actions.refactoring,
       nls.builtins.completion.tags,
-      nls.builtins.diagnostics.mypy,
+      -- nls.builtins.diagnostics.mypy,
     })
   end,
 }
