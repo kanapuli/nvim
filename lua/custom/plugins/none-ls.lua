@@ -1,6 +1,6 @@
 return {
   'nvimtools/none-ls.nvim',
-  enabled = true,
+  enabled = false,
   dependencies = {
     {
       'mason-org/mason.nvim',
