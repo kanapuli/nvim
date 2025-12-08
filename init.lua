@@ -98,6 +98,7 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 --
+vim.g.lazyvim_check_order = false
 vim.o.termguicolors = true
 vim.o.wrap = true
 vim.o.colorcolumn = '140'
@@ -1069,7 +1070,7 @@ require('lazy').setup({
           light = 'lotus',
         },
       }
-      vim.cmd.colorscheme 'kanagawa-wave'
+      -- vim.cmd.colorscheme 'kanagawa-wave'
     end,
   },
 
