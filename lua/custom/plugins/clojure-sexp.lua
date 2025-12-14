@@ -9,8 +9,10 @@ return {
     dependencies = { 'PaterJason/cmp-conjure', 'hrsh7th/nvim-cmp' },
     config = function()
       vim.g['conjure#mapping#doc_word'] = false
-      vim.g['conjure#mapping#doc_word'] = 'gk'
+      vim.g['conjure#mapping#doc_word'] = 'k'
       vim.g['conjure#extract#tree_sitter#enabled'] = true
+
+      vim.keymap.set('n', '<localleader>ls', '<cmd>ConjureLogSplit<CR>')
     end,
   },
   {
