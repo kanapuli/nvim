@@ -25,12 +25,4 @@ return {
       plugin_default = 'auto', -- Sets how all plugins will be loaded
     },
   },
-
-  -- Configure LazyVim to use AstroTheme
-  {
-    'LazyVim/LazyVim',
-    opts = {
-      colorscheme = 'astrodark',
-    },
-  },
 }

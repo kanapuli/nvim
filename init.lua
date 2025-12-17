@@ -768,72 +768,53 @@ require('lazy').setup({
             },
           },
         },
-        ruff = {
-          cmd_env = { RUFF_TRACE = 'messages' },
-          init_options = {
-            settings = {
-              logLevel = 'info',
-              configuration = './ruff.toml',
-              fixAll = false,
-              organizeImports = false,
-              showSyntaxErrors = false,
-              lint = {
-                enable = false,
-              },
-            },
-          },
-        },
-        basedpyright = {
-          settings = {
-            basedpyright = {
-              analysis = {
-                -- Type checking
-                typeCheckingMode = 'off', -- off, basic, standard, strict, recommended, all
-
-                -- Diagnostic settings
-                diagnosticMode = 'workspace', -- "openFilesOnly" or "workspace"
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-
-                -- Inlay hints (basedpyright exclusive features)
-                inlayHints = {
-                  variableTypes = false,
-                  callArgumentNames = false,
-                  callArgumentNamesMatching = false,
-                  functionReturnTypes = false,
-                  genericTypes = false,
-                },
-
-                -- Auto-completion settings
-                autoImportCompletions = true,
-                autoFormatStrings = true,
-
-                -- Diagnostic severity overrides
-                -- diagnosticSeverityOverrides = {
-                --   reportUnusedImport = 'information',
-                --   reportUnusedFunction = 'information',
-                --   reportUnusedVariable = 'information',
-                --   reportGeneralTypeIssues = 'error',
-                --   reportOptionalMemberAccess = 'warning',
-                -- },
-              },
-            },
-          },
-        },
-        -- ty = {
+        -- ruff = {
+        --   cmd_env = { RUFF_TRACE = 'messages' },
+        -- },
+        -- basedpyright = {
         --   settings = {
-        --     ty = {
-        --       inlayHints = {
-        --         variableTypes = false,
-        --       },
-        --       experimental = {
-        --         rename = false,
-        --         autoImport = false,
+        --     basedpyright = {
+        --       analysis = {
+        --         -- Type checking
+        --         typeCheckingMode = 'off', -- off, basic, standard, strict, recommended, all
+        --
+        --         -- Diagnostic settings
+        --         diagnosticMode = 'workspace', -- "openFilesOnly" or "workspace"
+        --         autoSearchPaths = true,
+        --         useLibraryCodeForTypes = true,
+        --
+        --         -- Inlay hints (basedpyright exclusive features)
+        --         inlayHints = {
+        --           variableTypes = false,
+        --           callArgumentNames = false,
+        --           callArgumentNamesMatching = false,
+        --           functionReturnTypes = false,
+        --           genericTypes = false,
+        --         },
+        --
+        --         -- Auto-completion settings
+        --         autoImportCompletions = true,
+        --         autoFormatStrings = true,
+        --
+        --         -- Diagnostic severity overrides
+        --         -- diagnosticSeverityOverrides = {
+        --         --   reportUnusedImport = 'information',
+        --         --   reportUnusedFunction = 'information',
+        --         --   reportUnusedVariable = 'information',
+        --         --   reportGeneralTypeIssues = 'error',
+        --         --   reportOptionalMemberAccess = 'warning',
+        --         -- },
         --       },
         --     },
         --   },
         -- },
         rust_analyzer = {},
+        -- clojure_lsp = {
+        --   capabilities = {
+        --     offsetEncoding = { 'utf-8', 'utf-16' },
+        --     settings = {},
+        --   },
+        -- },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -892,9 +873,8 @@ require('lazy').setup({
         'impl',
         'delve',
         'ruff',
-        'basedpyright',
-        -- 'mypy',
-        -- 'ty',
+        -- 'basedpyright',
+        'ty',
         'rust-analyzer',
         'jsonlint',
         'json-lsp',
@@ -903,6 +883,40 @@ require('lazy').setup({
         'shfmt',
         'staticcheck',
         'stylua',
+      })
+      vim.lsp.enable 'ruff'
+      vim.lsp.config('ruff', {
+        init_options = {
+          settings = {
+            logLevel = 'info',
+            configuration = './ruff.toml',
+            fixAll = true,
+            organizeImports = true,
+            showSyntaxErrors = true,
+            lint = {
+              enable = false,
+            },
+            format = {
+              preview = false,
+              backend = 'internal',
+            },
+          },
+        },
+      })
+      vim.lsp.enable 'ty'
+      vim.lsp.config('ty', {
+        settings = {
+          ty = {
+            diagnosticMode = 'openFilesOnly', -- other option is workspace
+            completions = {
+              autoImport = true,
+            },
+            inlayHints = {
+              callArgumentNames = true,
+              variableTypes = true,
+            },
+          },
+        },
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -945,19 +959,19 @@ require('lazy').setup({
         },
         formatters_by_ft = {
           lua = { 'stylua' },
-          go = { 'goimports-reviser', 'gofmt' },
+          go = { 'goimports-reviser', 'gofumpt', 'golines' },
           -- Conform can also run multiple formatters sequentially
-          python = { 'ruff' },
+          python = { 'ruff_format' },
           sh = { 'shfmt' },
           --
           -- You can use 'stop_after_first' to run the first available formatter from the list
           -- javascript = { "prettierd", "prettier", stop_after_first = true },
         },
-        -- formatters = {
-        --   ['goimports-reviser'] = {
-        --     prepend_args = { '-rm-unused' },
-        --   },
-        -- },
+        formatters = {
+          ['goimports-reviser'] = {
+            prepend_args = { '-rm-unused' },
+          },
+        },
       }
     end,
     opts = {
@@ -987,12 +1001,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
         opts = {},
       },
@@ -1038,7 +1052,7 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
@@ -1078,27 +1092,27 @@ require('lazy').setup({
     end,
   },
 
-  -- { -- You can easily change to a different colorscheme.
-  --   -- Change the name of the colorscheme plugin below, and then
-  --   -- change the command in the config to whatever the name of that colorscheme is.
-  --   --
-  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  --   'folke/tokyonight.nvim',
-  --   priority = 1000, -- Make sure to load this before all the other start plugins.
-  --   config = function()
-  --     ---@diagnostic disable-next-line: missing-fields
-  --     require('tokyonight').setup {
-  --       styles = {
-  --         comments = { italic = false }, -- Disable italics in comments
-  --       },
-  --     }
-  --
-  --     -- Load the colorscheme here.
-  --     -- Like many other themes, this one has different styles, and you could load
-  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  --     vim.cmd.colorscheme 'tokyonight-night'
-  --   end,
-  -- },
+  { -- You can easily change to a different colorscheme.
+    -- Change the name of the colorscheme plugin below, and then
+    -- change the command in the config to whatever the name of that colorscheme is.
+    --
+    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+    'folke/tokyonight.nvim',
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      ---@diagnostic disable-next-line: missing-fields
+      require('tokyonight').setup {
+        styles = {
+          comments = { italic = false }, -- Disable italics in comments
+        },
+      }
+
+      -- Load the colorscheme here.
+      -- Like many other themes, this one has different styles, and you could load
+      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+      vim.cmd.colorscheme 'tokyonight-night'
+    end,
+  },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
