@@ -740,7 +740,7 @@ require('lazy').setup({
         gopls = {
           settings = {
             gopls = {
-              gofumpt = true,
+              gofumpt = false,
               codelenses = {
                 gc_details = false,
                 test = false,
@@ -866,7 +866,7 @@ require('lazy').setup({
         'golangci-lint',
         'golangci-lint-langserver',
         'gopls',
-        'golines',
+        -- 'golines',
         'gotests',
         'gotestsum',
         'iferr',
@@ -959,7 +959,8 @@ require('lazy').setup({
         },
         formatters_by_ft = {
           lua = { 'stylua' },
-          go = { 'goimports-reviser', 'gofumpt', 'golines' },
+          -- go = { 'goimports-reviser', 'gofumpt' },
+          -- go = { 'gofmt' },
           -- Conform can also run multiple formatters sequentially
           python = { 'ruff_format' },
           sh = { 'shfmt' },
@@ -968,9 +969,9 @@ require('lazy').setup({
           -- javascript = { "prettierd", "prettier", stop_after_first = true },
         },
         formatters = {
-          ['goimports-reviser'] = {
-            prepend_args = { '-rm-unused' },
-          },
+          -- ['goimports-reviser'] = {
+          --   prepend_args = { '-rm-unused' },
+          -- },
         },
       }
     end,
