@@ -768,62 +768,6 @@ require('lazy').setup({
             },
           },
         },
-        -- ruff = {
-        --   cmd_env = { RUFF_TRACE = 'messages' },
-        -- },
-        -- basedpyright = {
-        --   settings = {
-        --     basedpyright = {
-        --       analysis = {
-        --         -- Type checking
-        --         typeCheckingMode = 'off', -- off, basic, standard, strict, recommended, all
-        --
-        --         -- Diagnostic settings
-        --         diagnosticMode = 'workspace', -- "openFilesOnly" or "workspace"
-        --         autoSearchPaths = true,
-        --         useLibraryCodeForTypes = true,
-        --
-        --         -- Inlay hints (basedpyright exclusive features)
-        --         inlayHints = {
-        --           variableTypes = false,
-        --           callArgumentNames = false,
-        --           callArgumentNamesMatching = false,
-        --           functionReturnTypes = false,
-        --           genericTypes = false,
-        --         },
-        --
-        --         -- Auto-completion settings
-        --         autoImportCompletions = true,
-        --         autoFormatStrings = true,
-        --
-        --         -- Diagnostic severity overrides
-        --         -- diagnosticSeverityOverrides = {
-        --         --   reportUnusedImport = 'information',
-        --         --   reportUnusedFunction = 'information',
-        --         --   reportUnusedVariable = 'information',
-        --         --   reportGeneralTypeIssues = 'error',
-        --         --   reportOptionalMemberAccess = 'warning',
-        --         -- },
-        --       },
-        --     },
-        --   },
-        -- },
-        rust_analyzer = {},
-        -- clojure_lsp = {
-        --   capabilities = {
-        --     offsetEncoding = { 'utf-8', 'utf-16' },
-        --     settings = {},
-        --   },
-        -- },
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -875,7 +819,10 @@ require('lazy').setup({
         'ruff',
         -- 'basedpyright',
         'ty',
-        'rust-analyzer',
+        -- 'rust-analyzer',
+        'bacon',
+        'bacon-ls',
+        'codelldb',
         'jsonlint',
         'json-lsp',
         'json-to-struct',
@@ -918,13 +865,24 @@ require('lazy').setup({
           },
         },
       })
+      vim.lsp.enable 'bacon-ls'
+      vim.lsp.config('bacon-ls', {
+        init_options = {
+          updateOnSave = true,
+          updateOnSaveWaitMillis = 1000,
+        },
+      })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = true,
+        automatic_installation = false,
         handlers = {
           function(server_name)
+            -- Skip rust_analyzer since it's managed by rustaceanvim
+            if server_name == 'rust_analyzer' then
+              return
+            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
